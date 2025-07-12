@@ -1,6 +1,6 @@
-cyber-editor/
-├── .github/
-│   └── workflows/
+cyber-editor/ 
+├── .github/ 
+│   └── workflows/ 
 │       └── ci.yml                # Continuous Integration workflow
 ├── src/
 │   ├── core/
