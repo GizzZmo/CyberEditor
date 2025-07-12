@@ -81,7 +81,6 @@ This file defines your project, its dependencies, and the scripts to run it.
 Use code with caution.
 Json
 
-    IGNORE_WHEN_COPYING_END
 
 To set this up: Run npm install in your terminal.
 
