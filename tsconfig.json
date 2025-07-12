@@ -1,0 +1,84 @@
+{
+  // A top-level comment explaining the purpose of this file.
+  // Note: Comments are allowed in tsconfig.json files.
+  "//": "This file contains the compiler options for the CyberEditor TypeScript project. It is configured for a modern Node.js environment using ES Modules and enforces strict type-checking for maximum code quality and robustness.",
+  
+  "compilerOptions": {
+    /* --- Target & Module Settings --- */
+
+    // 'target': Specifies the ECMAScript target version. 'ES2022' is a modern, stable choice supported by current Node.js versions.
+    "target": "ES2022",
+    
+    // 'module': This is CRITICAL for a Node.js project with "type": "module".
+    // 'NodeNext' tells TypeScript to use the modern ES Module system that Node.js expects.
+    "module": "NodeNext",
+
+    // 'moduleResolution': This goes hand-in-hand with "module": "NodeNext".
+    // It specifies the modern module resolution strategy used by Node.js for ES Modules.
+    "moduleResolution": "NodeNext",
+
+
+    /* --- Strictness & Code Quality --- */
+
+    // 'strict': The master switch. Enables all strict type-checking options.
+    // This is the single most important setting for a robust project.
+    "strict": true,
+
+    // 'noUnusedLocals': Reports an error for declared variables that are not used. Keeps code clean.
+    "noUnusedLocals": true,
+
+    // 'noUnusedParameters': Reports an error for declared function parameters that are not used.
+    "noUnusedParameters": true,
+    
+    // 'noImplicitReturns': Ensures all code paths in a function explicitly return a value if the function is expected to.
+    "noImplicitReturns": true,
+
+
+    /* --- Project Structure & Output --- */
+
+    // 'outDir': Specifies the output directory for all compiled JavaScript files.
+    // Keeps your source code separate from the build artifacts.
+    "outDir": "./dist",
+
+    // 'rootDir': Specifies the root directory of your source files.
+    // This ensures a clean output structure in the 'dist' folder.
+    "rootDir": "./src",
+
+    // 'sourceMap': Generates corresponding '.map' files.
+    // Essential for debugging, as it allows tools to map the compiled JS back to the original TS source.
+    "sourceMap": true,
+
+    // 'declaration': Generates '.d.ts' declaration files for your source files.
+    // Crucial if this project were to be published as a library for others to use.
+    "declaration": true,
+
+
+    /* --- JS & Module Interoperability --- */
+    
+    // 'esModuleInterop': Enables better compatibility between CommonJS and ES Modules.
+    // Allows for cleaner `import` syntax (e.g., `import chalk from 'chalk'`). Almost always recommended.
+    "esModuleInterop": true,
+    
+    // 'allowSyntheticDefaultImports': A companion to esModuleInterop.
+    "allowSyntheticDefaultImports": true,
+    
+    // 'forceConsistentCasingInFileNames': Prevents case-insensitivity issues with file imports, which can cause problems on Linux-based systems (like CI servers).
+    "forceConsistentCasingInFileNames": true,
+
+    // 'skipLibCheck': Skips type-checking of all declaration files (*.d.ts) from dependencies.
+    // This can significantly speed up compilation time.
+    "skipLibCheck": true
+  },
+
+  // Tells the TypeScript compiler which files to include in the compilation.
+  "include": [
+    "src/**/*" // Include all files within the 'src' directory.
+  ],
+
+  // Tells the TypeScript compiler which files to exclude from the compilation.
+  "exclude": [
+    "node_modules", // Always exclude node_modules.
+    "dist",         // Exclude the output directory to prevent re-compiling artifacts.
+    "tests"         // Exclude test files from the main production build.
+  ]
+}
