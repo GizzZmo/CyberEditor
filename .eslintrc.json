@@ -1,0 +1,65 @@
+{
+  // Tells ESLint to stop looking for config files in parent directories.
+  // This is a best practice for any project.
+  "root": true,
+
+  // Specifies the parser that will convert TypeScript code into a format ESLint can understand.
+  "parser": "@typescript-eslint/parser",
+
+  // Configuration options for the parser.
+  "parserOptions": {
+    "ecmaVersion": "latest", // Allows for the parsing of modern ECMAScript features.
+    "sourceType": "module", // Allows for the use of imports/exports.
+    // This is CRITICAL. It links ESLint to your tsconfig.json,
+    // enabling advanced rules that require type information.
+    "project": "./tsconfig.json"
+  },
+
+  // The core environments for the project.
+  "env": {
+    "node": true, // Enables Node.js global variables and Node.js scoping.
+    "es2022": true // Adds all ECMAScript 2022 globals and automatically sets ecmaVersion to 13.
+  },
+
+  // A list of plugins that provide custom rules.
+  "plugins": [
+    "@typescript-eslint" // The plugin for TypeScript-specific linting rules.
+  ],
+
+  // A list of pre-configured rule sets that we are extending from.
+  // The order matters: later configs can override earlier ones.
+  "extends": [
+    // 1. The baseline recommended rules from ESLint.
+    "eslint:recommended",
+    // 2. Disables base ESLint rules that conflict with TypeScript and adds TS-specific recommendations.
+    "plugin:@typescript-eslint/recommended",
+    // 3. Adds stricter rules that require type-checking (uses the 'project' setting from parserOptions).
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+  ],
+
+  // Custom rule overrides. Add any project-specific rules here.
+  // "off" or 0, "warn" or 1, "error" or 2.
+  "rules": {
+    // Example: Enforce that all functions with a return value must have an explicit return type.
+    // This improves code readability and prevents bugs.
+    "@typescript-eslint/explicit-function-return-type": "warn",
+
+    // Example: Warn about variables that are declared but never used.
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+
+    // Example: Forbid the use of 'any' to encourage strong typing.
+    "@typescript-eslint/no-explicit-any": [
+      "error",
+      {
+        "fixToUnknown": true,
+        "ignoreRestArgs": false
+      }
+    ]
+  }
+}
