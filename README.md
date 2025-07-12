@@ -1,19 +1,16 @@
 # CyberEditor - AI-driven autocomplete with support for all modern languages, with plug ins support, like compilers, text to speech etc.
 
+## Features and Technologies
+The repository employs TypeScript as its core language and Node.js as the runtime environment. Key features include a modular structure for scalability, a sandboxed plugin host for security, and an extensible autocompletion system. It uses modern paradigms like async/await and ES Modules, while implementing structured error handling for robustness. The architecture supports extensibility with an example plugin and autocompletion logic. Additionally, GitHub Actions is configured for CI/CD workflows to maintain code quality and automate builds.
+
 This initial implementation will focus on:
 
 Project Structure: A professional, scalable folder structure.
-
 Core Systems (in microcosm): Demonstrating the architectural ideas (Text Buffer, Plugin Host).
-
 Modern Paradigms: Using TypeScript, async/await, and ES Modules.
-
 Robustness: Implementing structured error handling.
-
 Extensibility: A working (though simplified) plugin and autocompletion system.
-
 CI/CD: A basic GitHub Actions workflow for continuous integration.
-
 The chosen technology for this prototype is TypeScript running on Node.js. It provides the strict typing needed to model these complex systems and allows for a quick, standalone demonstration without needing a full GUI framework.
 
 Step 1: Project Setup and Structure
@@ -53,20 +50,20 @@ package.json
 
 This file defines your project, its dependencies, and the scripts to run it.
 
-Generated json
-{
-  "name": "cyber-editor-core",
-  "version": "0.1.0",
-  "description": "Core systems for a high-performance, AI-powered, cyberpunk text editor.",
-  "main": "dist/index.js",
-  "type": "module",
-  "scripts": {
+    Generated json
+    {
+    "name": "cyber-editor-core",
+    "version": "0.1.0",
+    "description": "Core systems for a high-performance, AI-powered, cyberpunk text editor.",
+    "main": "dist/index.js",
+    "type": "module",
+    "scripts": {
     "start": "node --loader ts-node/esm src/index.ts",
     "build": "tsc",
     "test": "jest",
     "lint": "eslint . --ext .ts"
-  },
-  "devDependencies": {
+    },
+    "devDependencies": {
     "@types/jest": "^29.5.12",
     "@typescript-eslint/eslint-plugin": "^7.7.0",
     "@typescript-eslint/parser": "^7.7.0",
@@ -76,14 +73,14 @@ Generated json
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
-  }
-}
-IGNORE_WHEN_COPYING_START
-content_copy
-download
+    }
+    }
+    IGNORE_WHEN_COPYING_START
+      
 Use code with caution.
 Json
-IGNORE_WHEN_COPYING_END
+
+    IGNORE_WHEN_COPYING_END
 
 To set this up: Run npm install in your terminal.
 
@@ -92,29 +89,30 @@ src/core/errors.ts (Robust Error Handling)
 Instead of generic Error objects, we create structured errors.
 
 Generated typescript
-// src/core/errors.ts
-export enum ErrorCode {
-  PluginLoadFailed = 'PLUGIN_LOAD_FAILED',
-  PluginActivationFailed = 'PLUGIN_ACTIVATION_FAILED',
-  BufferOperationFailed = 'BUFFER_OPERATION_FAILED',
-  UnknownError = 'UNKNOWN_ERROR',
-}
+      
+    // src/core/errors.ts
+    export enum ErrorCode {
+    PluginLoadFailed = 'PLUGIN_LOAD_FAILED',
+    PluginActivationFailed = 'PLUGIN_ACTIVATION_FAILED',
+    BufferOperationFailed = 'BUFFER_OPERATION_FAILED',
+    UnknownError = 'UNKNOWN_ERROR',
+    }
 
-export class EditorError extends Error {
-  public readonly code: ErrorCode;
-  public readonly originalError?: Error;
+    export class EditorError extends Error {
+    public readonly code: ErrorCode;
+    public readonly originalError?: Error;
 
-  constructor(message: string, code: ErrorCode, originalError?: Error) {
+    constructor(message: string, code: ErrorCode, originalError?: Error) {
     super(message);
     this.name = 'EditorError';
     this.code = code;
     this.originalError = originalError;
-  }
-}
-IGNORE_WHEN_COPYING_START
-content_copy
-download
+    }
+    }
+    IGNORE_WHEN_COPYING_START
+
 Use code with caution.
+
 TypeScript
 IGNORE_WHEN_COPYING_END
 src/core/text_buffer.ts (The Core Data Structure)
@@ -122,50 +120,50 @@ src/core/text_buffer.ts (The Core Data Structure)
 We'll simulate the Rope's API. A real implementation would use a binary tree.
 
 Generated typescript
-// src/core/text_buffer.ts
-/**
- * A simulation of a high-performance text buffer.
- * A production version would use a Rope data structure for O(log n) operations.
- * For this prototype, we use a simple array of strings to model the public API.
- */
-export class TextBuffer {
-  private lines: string[] = [''];
+        
+    // src/core/text_buffer.ts  
+    /**
+     * A simulation of a high-performance text buffer.
+     * A production version would use a Rope data structure for O(log n) operations.
+ *     For this prototype, we use a simple array of strings to model the public API.
+ *      /
+        export class TextBuffer {
+        private lines: string[] = [''];
 
-  insert(line: number, column: number, text: string): void {
-    if (line < 0 || line >= this.lines.length) {
-      throw new Error(`Invalid line number: ${line}`);
-    }
-    const currentLine = this.lines[line];
-    const before = currentLine.substring(0, column);
-    const after = currentLine.substring(column);
-    this.lines[line] = before + text + after;
-  }
-
-  delete(line: number, column: number, length: number): void {
-    if (line < 0 || line >= this.lines.length) {
+        insert(line: number, column: number, text: string): void {
+       if (line < 0 || line >= this.lines.length) {
         throw new Error(`Invalid line number: ${line}`);
-    }
-    const currentLine = this.lines[line];
-    const before = currentLine.substring(0, column);
-    const after = currentLine.substring(column + length);
-    this.lines[line] = before + after;
-  }
+        }
+        const currentLine = this.lines[line];
+        const before = currentLine.substring(0, column);
+        const after = currentLine.substring(column);
+        this.lines[line] = before + text + after;
+        }
 
-  getLine(lineNumber: number): string {
-    return this.lines[lineNumber] || '';
-  }
+        delete(line: number, column: number, length: number): void {
+        if (line < 0 || line >= this.lines.length) {
+        throw new Error(`Invalid line number: ${line}`);
+        }
+        const currentLine = this.lines[line];
+        const before = currentLine.substring(0, column);
+        const after = currentLine.substring(column + length);
+       this.lines[line] = before + after;
+        }
 
-  getLineCount(): number {
-    return this.lines.length;
-  }
+        getLine(lineNumber: number): string {
+        return this.lines[lineNumber] || '';
+        }
 
-  getFullText(): string {
-    return this.lines.join('\n');
-  }
-}
-IGNORE_WHEN_COPYING_START
-content_copy
-download
+        getLineCount(): number {
+        eturn this.lines.length;
+        }
+
+        getFullText(): string {
+        return this.lines.join('\n');
+        }
+        }
+        IGNORE_WHEN_COPYING_START
+
 Use code with caution.
 TypeScript
 IGNORE_WHEN_COPYING_END
@@ -174,32 +172,32 @@ src/plugins/plugin_api.ts (The Secure API)
 This interface defines the only things a plugin is allowed to do.
 
 Generated typescript
-// src/plugins/plugin_api.ts
-import { CompletionProvider } from '../features/completion_provider.js';
+      
+    // src/plugins/plugin_api.ts
+    import { CompletionProvider } from '../features/completion_provider.js';
 
-export interface CyberEditorAPI {
-  /**
-   * Registers a provider for autocompletion suggestions.
-   */
-  registerCompletionProvider(provider: CompletionProvider): void;
+    export interface CyberEditorAPI {
+    /**
+     * Registers a provider for autocompletion suggestions.
+     */
+    registerCompletionProvider(provider: CompletionProvider): void;
 
-  /**
-   * Logs a message to the CyberEditor console, prefixed with the plugin's ID.
-   */
-  log(message: string): void;
+    /**
+     * Logs a message to the CyberEditor console, prefixed with the plugin's ID.
+     */
+    log(message: string): void;
 
-  /**
-   * Provides access to the current state of the text buffer in a read-only manner.
-   */
-  readonly buffer: {
+    /**
+     * Provides access to the current state of the text buffer in a read-only manner.
+     */
+    readonly buffer: {
     getLine: (lineNumber: number) => string;
     getLineCount: () => number;
     getFullText: () => string;
-  };
-}
-IGNORE_WHEN_COPYING_START
-content_copy
-download
+    };
+    }
+    IGNORE_WHEN_COPYING_START
+
 Use code with caution.
 TypeScript
 IGNORE_WHEN_COPYING_END
@@ -208,21 +206,22 @@ src/plugins/plugin_host.ts (The "Sandbox")
 This is critical for security and stability. It loads plugins and wraps their calls in error handlers, preventing a bad plugin from crashing the editor.
 
 Generated typescript
-// src/plugins/plugin_host.ts
-import { CyberEditorAPI } from './plugin_api.js';
-import { EditorError, ErrorCode } from '../core/errors.js';
-import chalk from 'chalk';
+      
+    // src/plugins/plugin_host.ts
+    import { CyberEditorAPI } from './plugin_api.js';
+    import { EditorError, ErrorCode } from '../core/errors.js';
+    import chalk from 'chalk';
 
-interface PluginModule {
-  activate(api: CyberEditorAPI): void;
-}
+    interface PluginModule {
+    activate(api: CyberEditorAPI): void;
+    }
 
-export class PluginHost {
-  private loadedPlugins: Map<string, PluginModule> = new Map();
+    export class PluginHost {
+    private loadedPlugins: Map<string, PluginModule> = new Map();
 
-  constructor(private api: CyberEditorAPI) {}
+    constructor(private api: CyberEditorAPI) {}
 
-  public async loadPlugin(pluginId: string, path: string): Promise<void> {
+    public async loadPlugin(pluginId: string, path: string): Promise<void> {
     console.log(chalk.gray(`[PluginHost] Loading plugin '${pluginId}' from ${path}...`));
     try {
       // Dynamic import() is the modern, async way to load modules
@@ -241,9 +240,9 @@ export class PluginHost {
         e instanceof Error ? e : new Error(String(e))
       );
     }
-  }
+    }
 
-  private activatePlugin(pluginId: string, plugin: PluginModule): void {
+    private activatePlugin(pluginId: string, plugin: PluginModule): void {
     console.log(chalk.cyan(`[PluginHost] Activating plugin '${pluginId}'...`));
     try {
       // The plugin is given a restricted API, not access to the whole editor
@@ -256,11 +255,10 @@ export class PluginHost {
         e instanceof Error ? e : new Error(String(e))
       );
     }
-  }
-}
-IGNORE_WHEN_COPYING_START
-content_copy
-download
+    }
+    }
+    IGNORE_WHEN_COPYING_START
+
 Use code with caution.
 TypeScript
 IGNORE_WHEN_COPYING_END
@@ -269,12 +267,13 @@ src/plugins/example_plugin.ts
 A third-party developer would write a file like this.
 
 Generated typescript
-// src/plugins/example_plugin.ts
-import { CyberEditorAPI } from './plugin_api.js';
-import { CompletionProvider, CompletionItem } from '../features/completion_provider.js';
+    
+    // src/plugins/example_plugin.ts
+    import { CyberEditorAPI } from './plugin_api.js';
+    import { CompletionProvider, CompletionItem } from '../features/completion_provider.js';
 
-class CyberKeywordCompletionProvider implements CompletionProvider {
-  provideCompletions(line: string, column: number): CompletionItem[] {
+    class CyberKeywordCompletionProvider implements CompletionProvider {
+    provideCompletions(line: string, column: number): CompletionItem[] {
     const suggestions: CompletionItem[] = [
       { label: 'cyber_core', detail: 'The main core instance.' },
       { label: 'decompile_matrix()', detail: 'Function to analyze data structures.' },
@@ -285,22 +284,22 @@ class CyberKeywordCompletionProvider implements CompletionProvider {
         return suggestions;
     }
     return [];
-  }
-}
+    }
+    }
 
-/**
- * This is the entry point for the plugin.
- * It is called by the PluginHost when the plugin is loaded.
- */
-export function activate(api: CyberEditorAPI): void {
-  api.log('CyberKeywords plugin activated. Providing cyberpunk-themed completions.');
+    /**
+     * This is the entry point for the plugin.
+     * It is called by the PluginHost when the plugin is loaded.
+     */
+    export function activate(api: CyberEditorAPI): void {
+    api.log('CyberKeywords plugin activated. Providing cyberpunk-themed completions.');
   
-  const provider = new CyberKeywordCompletionProvider();
-  api.registerCompletionProvider(provider);
-}
-IGNORE_WHEN_COPYING_START
-content_copy
-download
+    const provider = new CyberKeywordCompletionProvider();
+    api.registerCompletionProvider(provider);
+    }
+    IGNORE_WHEN_COPYING_START
+
+
 Use code with caution.
 TypeScript
 IGNORE_WHEN_COPYING_END
@@ -309,19 +308,20 @@ src/core/cyber_core.ts (The Orchestrator)
 This class ties everything together.
 
 Generated typescript
-// src/core/cyber_core.ts
-import { TextBuffer } from './text_buffer.js';
-import { PluginHost } from '../plugins/plugin_host.js';
-import { CyberEditorAPI } from '../plugins/plugin_api.js';
-import { CompletionProvider, CompletionItem } from '../features/completion_provider.js';
-import chalk from 'chalk';
+    
+    // src/core/cyber_core.ts
+    import { TextBuffer } from './text_buffer.js';
+    import { PluginHost } from '../plugins/plugin_host.js';
+    import { CyberEditorAPI } from '../plugins/plugin_api.js';
+    import { CompletionProvider, CompletionItem } from '../features/completion_provider.js';
+    import chalk from 'chalk';
 
-export class CyberCore {
-  public readonly buffer: TextBuffer;
-  private readonly pluginHost: PluginHost;
-  private completionProviders: CompletionProvider[] = [];
+    export class CyberCore {
+    public readonly buffer: TextBuffer;
+    private readonly pluginHost: PluginHost;
+    private completionProviders: CompletionProvider[] = [];
 
-  constructor() {
+    constructor() {
     this.buffer = new TextBuffer();
     
     // The API object passed to plugins is carefully constructed
@@ -337,20 +337,20 @@ export class CyberCore {
     };
     
     this.pluginHost = new PluginHost(api);
-  }
+    }
 
-  async initialize(): Promise<void> {
+    async initialize(): Promise<void> {
     console.log(chalk.bold.yellow('CyberEditor core initialization sequence engaged...'));
     // Simulate intensive startup tasks
     await new Promise(resolve => setTimeout(resolve, 50)); 
     console.log(chalk.green('Core systems online.'));
-  }
+    }
 
-  async loadPlugin(pluginId: string, path: string): Promise<void> {
+    async loadPlugin(pluginId: string, path: string): Promise<void> {
     await this.pluginHost.loadPlugin(pluginId, path);
-  }
+    }
 
-  requestCompletionsAt(line: number, column: number): CompletionItem[] {
+    requestCompletionsAt(line: number, column: number): CompletionItem[] {
     const currentLine = this.buffer.getLine(line);
     let allCompletions: CompletionItem[] = [];
 
@@ -367,11 +367,11 @@ export class CyberCore {
       }
     }
     return allCompletions;
-  }
-}
-IGNORE_WHEN_COPYING_START
-content_copy
-download
+    }
+    }
+    IGNORE_WHEN_COPYING_START
+
+
 Use code with caution.
 TypeScript
 IGNORE_WHEN_COPYING_END
@@ -380,21 +380,22 @@ src/index.ts (The Main Application)
 This file starts the editor and runs a simulation.
 
 Generated typescript
-// src/index.ts
-import { CyberCore } from './core/cyber_core.js';
-import { EditorError } from './core/errors.js';
-import chalk from 'chalk';
-import path from 'path';
-import { fileURLToPath } from 'url';
+    
+    // src/index.ts
+    import { CyberCore } from './core/cyber_core.js';
+    import { EditorError } from './core/errors.js';
+    import chalk from 'chalk';
+    import path from 'path';
+    import { fileURLToPath } from 'url';
 
-// Helper to get the correct path in ES Modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+    // Helper to get the correct path in ES Modules
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = path.dirname(__filename);
 
-async function main() {
-  const editor = new CyberCore();
+    async function main() {
+    const editor = new CyberCore();
 
-  try {
+    try {
     await editor.initialize();
 
     // Load our example plugin
@@ -418,7 +419,7 @@ async function main() {
 
     console.log(chalk.bold.blue('\n--- Simulation Complete ---'));
 
-  } catch (error) {
+    } catch (error) {
     if (error instanceof EditorError) {
       console.error(chalk.red.bold(`\n[FATAL EDITOR ERROR] Code: ${error.code}`));
       console.error(chalk.red(error.message));
@@ -429,13 +430,12 @@ async function main() {
       console.error(chalk.red.bold('\n[UNHANDLED FATAL ERROR]'), error);
     }
     process.exit(1);
-  }
-}
+    }
+    }
 
-main();
-IGNORE_WHEN_COPYING_START
-content_copy
-download
+    main();
+
+    
 Use code with caution.
 TypeScript
 IGNORE_WHEN_COPYING_END
@@ -445,17 +445,18 @@ Step 3: CI/CD and Quality
 This file will automatically run checks on every push or pull request to your GitHub repository.
 
 Generated yaml
-# .github/workflows/ci.yml
-name: CyberEditor CI
 
-on:
-  push:
+    # .github/workflows/ci.yml
+    name: CyberEditor CI
+
+    on:
+    push:
     branches: [ "main" ]
-  pull_request:
+    pull_request:
     branches: [ "main" ]
 
-jobs:
-  build_and_test:
+    jobs:
+    build_and_test:
     runs-on: ubuntu-latest
 
     steps:
@@ -480,12 +481,10 @@ jobs:
 
     - name: Build TypeScript
       run: npm run build
-IGNORE_WHEN_COPYING_START
-content_copy
-download
+
 Use code with caution.
 Yaml
-IGNORE_WHEN_COPYING_END
+
 README.md
 
 Your GitHub repository's front page.
