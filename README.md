@@ -125,8 +125,8 @@ Generated typescript
     /**
      * A simulation of a high-performance text buffer.
      * A production version would use a Rope data structure for O(log n) operations.
- *     For this prototype, we use a simple array of strings to model the public API.
- *      /
+     * For this prototype, we use a simple array of strings to model the public API.
+     *   /
         export class TextBuffer {
         private lines: string[] = [''];
 
@@ -166,7 +166,8 @@ Generated typescript
 
 Use code with caution.
 TypeScript
-IGNORE_WHEN_COPYING_END
+
+
 src/plugins/plugin_api.ts (The Secure API)
 
 This interface defines the only things a plugin is allowed to do.
@@ -200,7 +201,8 @@ Generated typescript
 
 Use code with caution.
 TypeScript
-IGNORE_WHEN_COPYING_END
+
+
 src/plugins/plugin_host.ts (The "Sandbox")
 
 This is critical for security and stability. It loads plugins and wraps their calls in error handlers, preventing a bad plugin from crashing the editor.
@@ -261,7 +263,7 @@ Generated typescript
 
 Use code with caution.
 TypeScript
-IGNORE_WHEN_COPYING_END
+
 src/plugins/example_plugin.ts
 
 A third-party developer would write a file like this.
@@ -302,7 +304,8 @@ Generated typescript
 
 Use code with caution.
 TypeScript
-IGNORE_WHEN_COPYING_END
+
+
 src/core/cyber_core.ts (The Orchestrator)
 
 This class ties everything together.
@@ -374,7 +377,8 @@ Generated typescript
 
 Use code with caution.
 TypeScript
-IGNORE_WHEN_COPYING_END
+
+
 src/index.ts (The Main Application)
 
 This file starts the editor and runs a simulation.
@@ -438,7 +442,8 @@ Generated typescript
     
 Use code with caution.
 TypeScript
-IGNORE_WHEN_COPYING_END
+
+
 Step 3: CI/CD and Quality
 .github/workflows/ci.yml
 
