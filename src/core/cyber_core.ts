@@ -2,7 +2,7 @@
 import { TextBuffer } from './text_buffer.js';
 import { PluginHost } from '../plugins/plugin_host.js';
 import { CyberEditorAPI } from '../plugins/plugin_api.js';
-import { CompletionProvider, CompletionItem } from '../features/completion_provider.js';
+import { CompletionProvider, CompletionItem, isCompletionProvider } from '../features/completion_provider.js';
 import chalk from 'chalk';
 
 export class CyberCore {
@@ -13,8 +13,6 @@ export class CyberCore {
   constructor() {
     this.buffer = new TextBuffer();
     
-    // The API object passed to plugins is carefully constructed
-    // to expose only what is safe and necessary.
     const api: CyberEditorAPI = {
       registerCompletionProvider: (provider) => this.completionProviders.push(provider),
       log: (message: string) => console.log(chalk.magenta(`[Plugin Log] ${message}`)),
@@ -30,7 +28,6 @@ export class CyberCore {
 
   async initialize(): Promise<void> {
     console.log(chalk.bold.yellow('CyberEditor core initialization sequence engaged...'));
-    // Simulate intensive startup tasks
     await new Promise(resolve => setTimeout(resolve, 50)); 
     console.log(chalk.green('Core systems online.'));
   }
@@ -47,12 +44,22 @@ export class CyberCore {
 
     for (const provider of this.completionProviders) {
       try {
-        const completions = provider.provideCompletions(currentLine, column);
-        if (completions.length > 0) {
-            allCompletions = [...allCompletions, ...completions];
+        // FIX #1: Add a type guard to prove to the linter that the provider is valid.
+        // This satisfies all the "no-unsafe-*" rules for the provider.
+        if (isCompletionProvider(provider)) {
+          const completions = provider.provideCompletions(currentLine, column);
+          if (completions && completions.length > 0) {
+              allCompletions = [...allCompletions, ...completions];
+          }
         }
       } catch (e) {
-        console.error(chalk.red(`Error in completion provider: ${e}`));
+        // FIX #2: Handle the 'unknown' error type safely.
+        // This satisfies the 'restrict-template-expressions' rule.
+        if (e instanceof Error) {
+          console.error(chalk.red(`Error in completion provider: ${e.message}`));
+        } else {
+          console.error(chalk.red('An unknown error occurred in a completion provider.'), e);
+        }
       }
     }
     return allCompletions;
