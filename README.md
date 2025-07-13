@@ -1,4 +1,5 @@
 # CyberEditor - AI-driven autocomplete with support for all modern languages, with plug ins support, like compilers, text to speech etc.
+[![CyberEditor CI](https://github.com/GizzZmo/CyberEditor/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/GizzZmo/CyberEditor/actions/workflows/ci.yml)
 
 ## Features and Technologies
 The repository employs TypeScript as its core language and Node.js as the runtime environment. Key features include a modular structure for scalability, a sandboxed plugin host for security, and an extensible autocompletion system. It uses modern paradigms like async/await and ES Modules, while implementing structured error handling for robustness. The architecture supports extensibility with an example plugin and autocompletion logic. Additionally, GitHub Actions is configured for CI/CD workflows to maintain code quality and automate builds.
