@@ -15,21 +15,24 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    # --- ADD THIS DEBUGGING STEP ---
+    - name: List files in the repository
+      run: ls -la
+    # -----------------------------
+
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '20'
         cache: 'npm'
+        # IMPORTANT: We can also add an explicit check for the lock file
+        cache-dependency-path: package-lock.json
 
     - name: Install dependencies
       run: npm install
 
     - name: Lint code
       run: npm run lint
-
-    # We don't have tests yet, but this is where they would run
-    # - name: Run tests
-    #   run: npm run test
 
     - name: Build TypeScript
       run: npm run build
